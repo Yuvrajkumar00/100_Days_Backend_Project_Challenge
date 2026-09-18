@@ -371,19 +371,19 @@ I will be sharing the journey publicly.
 
 ### 💼 LinkedIn
 
-[https://www.linkedin.com/in/yuvraj-kumar00/](#)
+[LinkedIn](https://www.linkedin.com/in/yuvraj-kumar00/)
 
 ### 🐦 Twitter / X
 
-[https://x.com/yuvrajkuma20644](#)
+[Twitter / X](https://x.com/yuvrajkuma20644)
 
 ### 📸 Instagram
 
-[https://www.instagram.com/yuvi_raj_977/](#)
+[Instagram](https://www.instagram.com/yuvi_raj_977/)
 
 ### 🎥 YouTube
 
-[https://www.youtube.com/@Consistent_with_Yuvraj](#)
+[YouTube](https://www.youtube.com/@Consistent_with_Yuvraj)
 
 > Links will be updated as the challenge progresses.
 
