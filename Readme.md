@@ -37,7 +37,7 @@ Throughout these 100 days, I will focus on:
 
 | Metric                    | Progress    |
 | ------------------------- | ----------- |
-| 🗓️ Days Completed        | **0 / 100** |
+| 🗓️ Days Completed        | **1 / 100** |
 | 🛠️ Projects Completed    | **0**       |
 | 🔌 APIs Built             | **0**       |
 | 🧠 Major Concepts Learned | **0**       |
@@ -46,7 +46,7 @@ Throughout these 100 days, I will focus on:
 ### Overall Progress
 
 ```text
-[░░░░░░░░░░] 0%
+[░░░░░░░░░░] 1%
 ```
 
 **Started:** September 19, 2026
@@ -269,7 +269,7 @@ Long-term technical notes and concepts that I want to remember and revisit.
 
 | Day                               | Topic         | Project / Implementation | Status |
 | --------------------------------- | ------------- | ------------------------ | ------ |
-
+| [Day 001](./daily-log/day-001.md) | Node.js Fundamentals & CommonJS | Node.js runtime, Module Wrapper, CommonJS Export & Import | 🟡 In Progress |
 
 
 > This table will be updated throughout the challenge.
