@@ -1,0 +1,19 @@
+{
+  "name": "todo_app",
+  "version": "1.0.0",
+  "description": "This is my first backend project of \"100 Days Backend Project Challenges\"",
+  "keywords": [
+    "backend",
+    "100",
+    "days",
+    "challenge",
+    "project"
+  ],
+  "license": "ISC",
+  "author": "Yuvraj Kumar",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
