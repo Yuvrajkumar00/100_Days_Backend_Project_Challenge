@@ -18,3 +18,7 @@ maintained in Notion throughout the 100 Days Backend Project Challenge.
 | Day 003 | .env File | [View Notes](https://app.notion.com/p/Day-003-Basic-Setup-Notes-3cbfd26954fd804fa167c0d11d62fdf2?source=copy_link) |
 | Day 003 | CORS — Cross-Origin Resource Sharing | [View Notes](https://app.notion.com/p/Day-003-Basic-Setup-Notes-3cbfd26954fd804fa167c0d11d62fdf2?source=copy_link) |
 | Day 003 | PORT Environment Variable & Fallback in Node.js | [View Notes](https://app.notion.com/p/Day-003-Basic-Setup-Notes-3cbfd26954fd804fa167c0d11d62fdf2?source=copy_link) |
+| Day 004 | API Error Handling in Node.js/Express | [View Notes](https://app.notion.com/p/Day-004-API-Error-Handling-in-Node-js-Express-3ccfd26954fd806dbd63e992be6309ea?source=copy_link) |
+| Day 004 | API Response — Node.js | [View Notes](https://app.notion.com/p/Day-004-API-Response-Node-js-3ccfd26954fd802aaf1bc580521b0aa7?source=copy_link) |
+| Day 004 | Multer Middleware in Express.js | [View Notes](https://app.notion.com/p/Day-004-Multer-Middleware-in-Express-js-3cffd26954fd80cd977cd9a3c1b9ae74?source=copy_link) |
+| Day 004 | Global Error Handler — Notion Notes | [View Notes](https://app.notion.com/p/Day-004-Global-Error-Handler-Notion-Notes-3d0fd26954fd804f8349cd47d5912de1?source=copy_link) |

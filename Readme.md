@@ -37,7 +37,7 @@ Throughout these 100 days, I will focus on:
 
 | Metric                    | Progress    |
 | ------------------------- | ----------- |
-| 🗓️ Days Completed        | **3 / 100** |
+| 🗓️ Days Completed        | **4 / 100** |
 | 🛠️ Projects Completed    | **0**       |
 | 🔌 APIs Built             | **0**       |
 | 🧠 Major Concepts Learned | **1**       |
@@ -46,7 +46,7 @@ Throughout these 100 days, I will focus on:
 ### Overall Progress
 
 ```text
-[░░░░░░░░░░] 3%
+[░░░░░░░░░░] 4%
 ```
 
 **Started:** September 19, 2026
@@ -272,6 +272,7 @@ Long-term technical notes and concepts that I want to remember and revisit.
 | [Day 001](./daily-log/day-001.md) | Node.js Fundamentals & CommonJS | Node.js runtime, Module Wrapper, CommonJS Export & Import | 🟡 In Progress |
 | [Day 002](./daily-log/day-002.md) | Express.js & Node.js HTTP Internals | Node.js HTTP server, Express routing, app.get(), app.post(), app.listen(), built a mini Express-like framework | 🟢 Completed |
 | [Day 003](./daily-log/day-003.md) | Todo Backend Project Setup & MongoDB Configuration | Configured the Todo backend project by updating config.js, app.js, server.js, and package.json. Set up the MongoDB connection configuration and understood the difference between MongoDB Server, Compass, and Atlas. | 🟢 Completed |
+| [Day 004](./daily-log/day-004.md) | Backend Foundation & Middleware | Created User & Todo models, constants, API utilities, global error handler, validator middleware and Multer middleware | 🟢 Completed |
 
 
 > This table will be updated throughout the challenge.
