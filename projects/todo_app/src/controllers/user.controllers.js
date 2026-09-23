@@ -5,6 +5,7 @@ import { UserRolesEnum } from "../utils/constants.js";
 import { sendMail, emailVerificationMailgenContent } from "../utils/mail.js";
 import config from "../configs/config.js";
 import { ApiError } from "../utils/api-errors.js";
+import crypto from "crypto";
 
 
 const healthCheckRoute = asyncHandler(async (req, res) => {
@@ -68,6 +69,40 @@ const userRegister = asyncHandler(async (req, res) => {
 
 });
 
+const userVerification = asyncHandler( async (req, res) => {
+    // 1. get token from user
+    const {token} = req.params;
+    console.log("token", token);
+
+    // 2. validate token using express validator
+
+    // 3. hashed token
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    console.log("hashedToken", hashedToken);
+    
+    // 4. find user based on token
+    const user = await User.findOne({verificationToken: hashedToken});
+    console.log("userverification", user);
+
+    // 5. return message if user not found
+    if(!user) {
+        return res.status(400).json(new ApiResponse(400, "Verification token is not valid"));
+    }
+
+    // 6. check verification token is expiry or not
+    if( !(user.verificationTokenExpiry >= Date.now()) ) {
+        return res.status(400).json(new ApiResponse(400, "Token has expired"));
+    }
+
+    // 7. update isVerified = true in DB
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    user.verificationTokenExpiry = undefined;
+    await user.save();
+
+    // 8. send res 
+    res.status(200).json(new ApiResponse(200, "User verified successfully!!"));
+})
 
 
-export { healthCheckRoute, userRegister }
+export { healthCheckRoute, userRegister, userVerification }

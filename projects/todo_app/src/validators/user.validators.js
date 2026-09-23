@@ -1,4 +1,4 @@
-import {body} from "express-validator";
+import {body, param} from "express-validator";
 import {AvailableUserRoles} from "../utils/constants.js";
 
 const userRegisterationValidator = () => {
@@ -34,5 +34,11 @@ const userLoginValidator = () => {
     ]
 }
 
+    const userVerificationValidator = () => {
+        return [
+            param("token")
+                .notEmpty().withMessage("Verification token is required")
+        ]
+    }
 
-export {userRegisterationValidator, userLoginValidator}
+export {userRegisterationValidator, userLoginValidator, userVerificationValidator}
