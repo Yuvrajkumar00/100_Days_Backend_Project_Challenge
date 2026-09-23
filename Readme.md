@@ -37,16 +37,16 @@ Throughout these 100 days, I will focus on:
 
 | Metric                    | Progress    |
 | ------------------------- | ----------- |
-| 🗓️ Days Completed        | **4 / 100** |
+| 🗓️ Days Completed        | **5 / 100** |
 | 🛠️ Projects Completed    | **0**       |
-| 🔌 APIs Built             | **0**       |
-| 🧠 Major Concepts Learned | **1**       |
-| 🐛 Bugs Debugged          | **0**       |
+| 🔌 APIs Built             | **1**       |
+| 🧠 Major Concepts Learned | **2**       |
+| 🐛 Bugs Debugged          | **3**       |
 
 ### Overall Progress
 
 ```text
-[░░░░░░░░░░] 4%
+[░░░░░░░░░░] 5%
 ```
 
 **Started:** September 19, 2026
@@ -273,6 +273,7 @@ Long-term technical notes and concepts that I want to remember and revisit.
 | [Day 002](./daily-log/day-002.md) | Express.js & Node.js HTTP Internals | Node.js HTTP server, Express routing, app.get(), app.post(), app.listen(), built a mini Express-like framework | 🟢 Completed |
 | [Day 003](./daily-log/day-003.md) | Todo Backend Project Setup & MongoDB Configuration | Configured the Todo backend project by updating config.js, app.js, server.js, and package.json. Set up the MongoDB connection configuration and understood the difference between MongoDB Server, Compass, and Atlas. | 🟢 Completed |
 | [Day 004](./daily-log/day-004.md) | Backend Foundation & Middleware | Created User & Todo models, constants, API utilities, global error handler, validator middleware and Multer middleware | 🟢 Completed |
+| [Day 005](./daily-log/day-005.md) | User Registration & API Integration | Created mail functionality, healthcheck API, user registration route & controller, and fixed implementation errors | 🟢 Completed |
 
 
 > This table will be updated throughout the challenge.
