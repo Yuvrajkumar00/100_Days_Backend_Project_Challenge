@@ -10,7 +10,7 @@ export const TodoStatusEnum = {
     COMPLETED: "completed"
 }
 
-export const AvailableTodoStatuses = Object.values(UserStatusEnum);
+export const AvailableTodoStatuses = Object.values(TodoStatusEnum);
 
 export const TodoPriorityEnum = {
     LOW: "low",
@@ -18,5 +18,5 @@ export const TodoPriorityEnum = {
     HIGH: "high"
 }
 
-export const AvailableTodoPriorities = Object.values(UserPriorityEnum);
+export const AvailableTodoPriorities = Object.values(TodoPriorityEnum);
 

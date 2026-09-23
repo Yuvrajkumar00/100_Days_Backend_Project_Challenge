@@ -33,3 +33,6 @@ const userLoginValidator = () => {
             .isLowercase().withMessage("Email must be lowercase")   
     ]
 }
+
+
+export {userRegisterationValidator, userLoginValidator}
