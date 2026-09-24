@@ -37,16 +37,16 @@ Throughout these 100 days, I will focus on:
 
 | Metric                    | Progress    |
 | ------------------------- | ----------- |
-| 🗓️ Days Completed        | **5 / 100** |
+| 🗓️ Days Completed        | **6 / 100** |
 | 🛠️ Projects Completed    | **0**       |
-| 🔌 APIs Built             | **1**       |
-| 🧠 Major Concepts Learned | **2**       |
+| 🔌 APIs Built             | **4**       |
+| 🧠 Major Concepts Learned | **3**       |
 | 🐛 Bugs Debugged          | **3**       |
 
 ### Overall Progress
 
 ```text
-[░░░░░░░░░░] 5%
+[░░░░░░░░░░] 6%
 ```
 
 **Started:** September 19, 2026
@@ -274,6 +274,7 @@ Long-term technical notes and concepts that I want to remember and revisit.
 | [Day 003](./daily-log/day-003.md) | Todo Backend Project Setup & MongoDB Configuration | Configured the Todo backend project by updating config.js, app.js, server.js, and package.json. Set up the MongoDB connection configuration and understood the difference between MongoDB Server, Compass, and Atlas. | 🟢 Completed |
 | [Day 004](./daily-log/day-004.md) | Backend Foundation & Middleware | Created User & Todo models, constants, API utilities, global error handler, validator middleware and Multer middleware | 🟢 Completed |
 | [Day 005](./daily-log/day-005.md) | User Registration & API Integration | Created mail functionality, healthcheck API, user registration route & controller, and fixed implementation errors | 🟢 Completed |
+| [Day 006](./daily-log/day-006.md) | Authentication & User Verification | Created Verification Token Controller, User Login Controller, and Login Route with session creation and refresh-token cookie setup | 🟢 Completed |
 
 
 > This table will be updated throughout the challenge.
