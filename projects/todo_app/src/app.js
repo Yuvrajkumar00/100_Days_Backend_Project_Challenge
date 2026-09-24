@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import config from "./configs/config.js";
 import dns from "dns";
+import cookieParser from "cookie-parser";
 
 dns.setServers([
     "8.8.8.8",
@@ -18,6 +19,7 @@ app.use(cors({
 }))
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(cookieParser());
 
 // import routes
 import { userRoute } from "./routes/user.routes.js";

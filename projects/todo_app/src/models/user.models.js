@@ -66,11 +66,12 @@ userSchema.methods.generateRefreshToken = function() {
     )
 };
 
-userSchema.methods.generateAccessToken = function() {
+userSchema.methods.generateAccessToken = function(session) {
     return jwt.sign(
         {
             _id: this._id,
             role: this.role,
+            session,
         },
         config.ACCESS_TOKEN_SECRET,
         {

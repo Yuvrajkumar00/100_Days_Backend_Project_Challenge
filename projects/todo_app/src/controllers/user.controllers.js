@@ -6,6 +6,8 @@ import { sendMail, emailVerificationMailgenContent } from "../utils/mail.js";
 import config from "../configs/config.js";
 import { ApiError } from "../utils/api-errors.js";
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import {Session} from "../models/session.models.js";
 
 
 const healthCheckRoute = asyncHandler(async (req, res) => {
@@ -104,5 +106,67 @@ const userVerification = asyncHandler( async (req, res) => {
     res.status(200).json(new ApiResponse(200, "User verified successfully!!"));
 })
 
+const userLogin = asyncHandler(async (req, res) => {
+    // 1. get data from user
+    const {email, password} = req.body;
+    console.log("email", email, "password", password);
+    
 
-export { healthCheckRoute, userRegister, userVerification }
+    // 2. validate using a express-validator
+
+    // 3. find user based on email
+    const user = await User.findOne({email});
+    console.log("user", user);
+    
+    // 4. return res if user not found
+    if(!user) {
+        return res.status(400).json(new ApiResponse(400, "Invalid email or password"));
+    }
+
+    // 5. compare password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log("isPasswordValid", isPasswordValid);
+
+    // 6. return res if password not match
+    if(!isPasswordValid) {
+        return res.status(400).json(new ApiResponse(400, "Invalid email or password"));
+    }
+
+    // 7. check user is verified
+    if(!user.isVerified) {
+        return res.status(400).json(new ApiResponse(400, "Invalid user"));
+    }
+
+    // 8. generate refresh token
+    const unHashedRefreshToken = user.generateRefreshToken();
+    const hashedRefreshToken = crypto.createHash("sha256").update(unHashedRefreshToken).digest("hex");
+    console.log("unHashedRefreshToken", unHashedRefreshToken, "hashedRefreshToken", hashedRefreshToken);
+
+    // 9. create a session
+    const session = await Session.create({
+        user: user._id,
+        refreshToken: hashedRefreshToken,
+        ip: req.ip,
+        userAgent: req.headers["user-agent"],
+        expiresAt: new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)),
+        revokedAt: null,
+    })
+    console.log("session", session);
+    
+    //10. set cookies in browser
+    res.cookie("refreshToken", unHashedRefreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+    })
+
+    // 11. generate a access token
+    const accessToken = user.generateAccessToken(session);
+    console.log("accessToken", accessToken);
+    
+    // 12. send res
+    res.status(200).json(new ApiResponse(200, "User login successfully!!", accessToken));
+})
+
+export { healthCheckRoute, userRegister, userVerification, userLogin }
