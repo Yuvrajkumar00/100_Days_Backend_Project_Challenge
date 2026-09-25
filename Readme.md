@@ -37,16 +37,16 @@ Throughout these 100 days, I will focus on:
 
 | Metric                    | Progress    |
 | ------------------------- | ----------- |
-| 🗓️ Days Completed        | **6 / 100** |
+| 🗓️ Days Completed        | **7 / 100** |
 | 🛠️ Projects Completed    | **0**       |
-| 🔌 APIs Built             | **4**       |
+| 🔌 APIs Built             | **5**       |
 | 🧠 Major Concepts Learned | **3**       |
 | 🐛 Bugs Debugged          | **3**       |
 
 ### Overall Progress
 
 ```text
-[░░░░░░░░░░] 6%
+[░░░░░░░░░░] 7%
 ```
 
 **Started:** September 19, 2026
@@ -275,6 +275,7 @@ Long-term technical notes and concepts that I want to remember and revisit.
 | [Day 004](./daily-log/day-004.md) | Backend Foundation & Middleware | Created User & Todo models, constants, API utilities, global error handler, validator middleware and Multer middleware | 🟢 Completed |
 | [Day 005](./daily-log/day-005.md) | User Registration & API Integration | Created mail functionality, healthcheck API, user registration route & controller, and fixed implementation errors | 🟢 Completed |
 | [Day 006](./daily-log/day-006.md) | Authentication & User Verification | Created Verification Token Controller, User Login Controller, and Login Route with session creation and refresh-token cookie setup | 🟢 Completed |
+| [Day 007](./daily-log/day-007.md) | Refresh Token & Session Management | Created refresh token controller and route with JWT verification, session validation, refresh-token hashing, and basic token rotation | 🟢 Completed |
 
 
 > This table will be updated throughout the challenge.
