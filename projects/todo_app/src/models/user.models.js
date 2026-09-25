@@ -54,10 +54,11 @@ userSchema.methods.isPasswordCorrect = async function(password) {
     return await bcrypt.compare(password, this.password);
 }
 
-userSchema.methods.generateRefreshToken = function() {
+userSchema.methods.generateRefreshToken = function(session) {
     return jwt.sign(
         {
             _id: this._id,
+            sessionId: session._id,
         },
         config.REFRESH_TOKEN_SECRET,
         {
@@ -71,7 +72,7 @@ userSchema.methods.generateAccessToken = function(session) {
         {
             _id: this._id,
             role: this.role,
-            session,
+            sessionId: session._id,
         },
         config.ACCESS_TOKEN_SECRET,
         {

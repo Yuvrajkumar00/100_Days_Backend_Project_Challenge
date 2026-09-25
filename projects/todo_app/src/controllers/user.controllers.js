@@ -8,6 +8,7 @@ import { ApiError } from "../utils/api-errors.js";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import {Session} from "../models/session.models.js";
+import jwt from "jsonwebtoken";
 
 
 const healthCheckRoute = asyncHandler(async (req, res) => {
@@ -137,23 +138,26 @@ const userLogin = asyncHandler(async (req, res) => {
         return res.status(400).json(new ApiResponse(400, "Invalid user"));
     }
 
-    // 8. generate refresh token
-    const unHashedRefreshToken = user.generateRefreshToken();
-    const hashedRefreshToken = crypto.createHash("sha256").update(unHashedRefreshToken).digest("hex");
-    console.log("unHashedRefreshToken", unHashedRefreshToken, "hashedRefreshToken", hashedRefreshToken);
-
-    // 9. create a session
-    const session = await Session.create({
+    // 8. create a session
+    const session = new Session({
         user: user._id,
-        refreshToken: hashedRefreshToken,
         ip: req.ip,
         userAgent: req.headers["user-agent"],
         expiresAt: new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)),
         revokedAt: null,
     })
     console.log("session", session);
+
+    // 9. generate refresh token
+    const unHashedRefreshToken = user.generateRefreshToken(session);
+    const hashedRefreshToken = crypto.createHash("sha256").update(unHashedRefreshToken).digest("hex");
+    console.log("unHashedRefreshToken", unHashedRefreshToken, "hashedRefreshToken", hashedRefreshToken);
     
-    //10. set cookies in browser
+    // 10. set refresh token inside session
+    session.refreshToken = hashedRefreshToken;
+    await session.save();
+
+    //11. set cookies in browser
     res.cookie("refreshToken", unHashedRefreshToken, {
         httpOnly: true,
         secure: true,
@@ -161,12 +165,103 @@ const userLogin = asyncHandler(async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
     })
 
-    // 11. generate a access token
+    // 12. generate a access token
     const accessToken = user.generateAccessToken(session);
     console.log("accessToken", accessToken);
     
-    // 12. send res
+    // 13. send res
     res.status(200).json(new ApiResponse(200, "User login successfully!!", accessToken));
+});
+
+const refreshToken = asyncHandler( async (req, res) => {
+    // 1. get refresh token from cookie
+    const {refreshToken} = req.cookies;
+    console.log("refreshToken", refreshToken);
+
+    // 2. validate token using express validator
+
+    // 3. verify refresh token
+    const decoded = jwt.verify(refreshToken, config.REFRESH_TOKEN_SECRET);
+    console.log("decoded", decoded);
+    
+    // 4. return res if refresh token is wrong or expired
+    if(!decoded) {
+        return res.status(401).json(new ApiResponse(401, "Invalid or expired refresh token"));
+    }
+
+    // 5. Get user ID and session ID
+    const {_id: userId, sessionId} = decoded;
+    console.log("_id:", userId, "sessionId", sessionId);
+    
+    // 6. hashed token
+    const hashedRefreshToken = crypto.createHash("sha256").update(refreshToken).digest("hex");
+    console.log("hashedRefreshToken", hashedRefreshToken);
+    
+    // 7. find session based on session id
+    const session = await Session.findById(sessionId);
+    console.log("session", session);
+    
+    // 8. return res if session not find
+    if(!session) {
+        return res.status(401).json(new ApiResponse(401, "Session not found"));
+    }
+
+    // 9. check session belongs to the user
+    if(session.user.toString() !== userId.toString()) {
+        throw new ApiError(401, "Invalid session");
+    }
+
+    // 10. check session is revoked
+    if(session.revokedAt) {
+        throw new ApiError(401, "Session has been revoked");
+    }
+
+    // 11. check session expiration
+    if(session.expiresAt <= new Date()) {
+        throw new ApiError(401, "Session has expired")
+    }
+
+    // 12. compare refresh token hash
+    if(session.refreshToken !== hashedRefreshToken) {
+        throw new ApiError(401, "Invalid refresh token")
+    }
+
+    // 13. find user using userId
+    const user = await User.findById(userId);
+    console.log("user", user);
+
+    // 14. return res if user not found
+    if(!user) {
+        return res.status(400).json(new ApiResponse(400, "User not found"));
+    }
+
+    // 15. generate new access token 
+    const newAccessToken = user.generateAccessToken(session);
+    console.log("newAccessToken", newAccessToken);
+    
+    // 16 . generate new refresh token
+    const newRefreshToken = user.generateRefreshToken(session);
+    const hashedNewRefreshToken = crypto.createHash("sha256").update(newRefreshToken).digest("hex");
+    console.log("newRefreshToken", newRefreshToken, "hashedNewRefreshToken", hashedNewRefreshToken);
+    
+    // 17. save hashed refresh token in session
+    session.refreshToken = hashedNewRefreshToken;
+    await session.save();
+
+    // 18. set unhashed token inside cookie
+    res.cookie("refreshToken", newRefreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+    })
+
+    // 19. send access token to the user using response
+    res.status(200).json(new ApiResponse(200, "Access token refreshed successfully!!", newAccessToken));
 })
 
-export { healthCheckRoute, userRegister, userVerification, userLogin }
+const userLogout = asyncHandler(async (req, res) => {
+    // 1.
+})
+
+export { healthCheckRoute, userRegister, userVerification, userLogin, refreshToken }
