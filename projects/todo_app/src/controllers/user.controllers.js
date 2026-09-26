@@ -9,6 +9,8 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import {Session} from "../models/session.models.js";
 import jwt from "jsonwebtoken";
+import { ref } from "process";
+import { cookie } from "express-validator";
 
 
 const healthCheckRoute = asyncHandler(async (req, res) => {
@@ -261,7 +263,50 @@ const refreshToken = asyncHandler( async (req, res) => {
 })
 
 const userLogout = asyncHandler(async (req, res) => {
-    // 1.
+    // 1. get refresh token from cookies
+    const {refreshToken} = req.cookies;
+    console.log("refreshToken", refreshToken);
+    
+    // 2. validate cookies using express-validator
+    if(!refreshToken) {
+        res.clearCookie("refreshToken");
+        return res.status(200).json(new ApiResponse(200, "You are already logout."));
+    }
+    
+    let decoded;
+    try {
+        // 3. verify token using jwt
+        decoded = jwt.verify(refreshToken, config.REFRESH_TOKEN_SECRET);
+        console.log("decoded", decoded);
+        
+    } catch (error) {
+        res.clearCookie("refreshToken");
+        return res.status(200).json(new ApiResponse(200, "You are already logout."));
+    }
+
+    // 5. destructre sessionId and userId
+    const {sessionId} = decoded;
+    console.log("sessionId: ", sessionId);
+    
+    // 6. find session based on sessionId
+    const session = await Session.findById(sessionId);
+    console.log("session", session);
+    
+
+    if(!session) {
+        res.clearCookie("refreshToken");
+        return res.status(200).json(new ApiResponse(200, "You are already logout."));
+    }
+    // 7. update session model session.refreshToken = null, session.revoked = new Date()
+    session.refreshToken = null;
+    session.revokedAt = new Date();
+    await session.save();
+
+    // 8. remove refreshToken inside cookies
+    res.clearCookie("refreshToken");
+
+    // 9. send response user logout successfully
+    res.status(200).json(new ApiResponse(200, "User logout successfully!!"));
 })
 
-export { healthCheckRoute, userRegister, userVerification, userLogin, refreshToken }
+export { healthCheckRoute, userRegister, userVerification, userLogin, refreshToken, userLogout }
