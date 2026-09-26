@@ -11,6 +11,6 @@ userRoute.route("/register").post(userRegisterationValidator(), validate ,userRe
 userRoute.route("/verify-email/:token").get(userVerificationValidator(), validate ,userVerification);
 userRoute.route("/login").post(userLoginValidator(), validate, userLogin);
 userRoute.route("/refresh-token").get(refreshTokenValidator(), validate ,refreshToken);
-userRoute.route("/logout").get(refreshTokenValidator(), validate, userLogout);
+userRoute.route("/logout").get(userLogout);
 
 export {userRoute};

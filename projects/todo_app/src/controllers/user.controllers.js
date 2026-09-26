@@ -9,8 +9,6 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import {Session} from "../models/session.models.js";
 import jwt from "jsonwebtoken";
-import { ref } from "process";
-import { cookie } from "express-validator";
 
 
 const healthCheckRoute = asyncHandler(async (req, res) => {
@@ -267,7 +265,7 @@ const userLogout = asyncHandler(async (req, res) => {
     const {refreshToken} = req.cookies;
     console.log("refreshToken", refreshToken);
     
-    // 2. validate cookies using express-validator
+    // 2. validate cookies
     if(!refreshToken) {
         res.clearCookie("refreshToken");
         return res.status(200).json(new ApiResponse(200, "You are already logout."));

@@ -8,7 +8,6 @@ const sessionSchema = new Schema({
     },
     refreshToken: {
         type: String,
-        required: true,
     },
     expiresAt: {
         type: Date,
