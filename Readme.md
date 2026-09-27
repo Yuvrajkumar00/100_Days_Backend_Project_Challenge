@@ -37,16 +37,16 @@ Throughout these 100 days, I will focus on:
 
 | Metric                    | Progress    |
 | ------------------------- | ----------- |
-| 🗓️ Days Completed        | **8 / 100** |
+| 🗓️ Days Completed        | **9 / 100** |
 | 🛠️ Projects Completed    | **0**       |
-| 🔌 APIs Built             | **6**       |
+| 🔌 APIs Built             | **8**       |
 | 🧠 Major Concepts Learned | **3**       |
 | 🐛 Bugs Debugged          | **3**       |
 
 ### Overall Progress
 
 ```text
-[░░░░░░░░░░] 8%
+[░░░░░░░░░░] 9%
 ```
 
 **Started:** September 19, 2026
@@ -277,6 +277,7 @@ Long-term technical notes and concepts that I want to remember and revisit.
 | [Day 006](./daily-log/day-006.md) | Authentication & User Verification | Created Verification Token Controller, User Login Controller, and Login Route with session creation and refresh-token cookie setup | 🟢 Completed |
 | [Day 007](./daily-log/day-007.md) | Refresh Token & Session Management | Created refresh token controller and route with JWT verification, session validation, refresh-token hashing, and basic token rotation | 🟢 Completed |
 | [Day 008](./daily-log/day-008.md) | User Logout & Session Revocation | Implemented logout controller with refresh-token cookie handling, JWT verification, session revocation, and cookie clearing | 🟢 Completed |
+| [Day 009](./daily-log/day-009.md) | User Logout & Session RevocationChange Password & Session Management | Implementing change password flow, password verification, hashing, and session revocation in Todo API | 🔄 In Progress |
 
 
 > This table will be updated throughout the challenge.
