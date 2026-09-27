@@ -307,4 +307,100 @@ const userLogout = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, "User logout successfully!!"));
 })
 
-export { healthCheckRoute, userRegister, userVerification, userLogin, refreshToken, userLogout }
+const userProfile = asyncHandler( async (req, res) => {
+    // 1. get user from req
+    const user = req.user;
+    console.log("user", user);
+
+    // 2. get user with a specific details
+    const createdUser = await User.findById(user._id).select("-password");
+    console.log("createdUser", createdUser);
+    
+    // 3. send res 
+    res.status(200).json(new ApiResponse(200, "User get profile successfully!!", createdUser));
+})
+
+const resendVerificationEmail = asyncHandler( async(req, res) => {  
+    // *1. Get email from request body*
+    const {email} = req.body;
+    console.log("email", email);
+    
+    // *2. Validate email using express-validator*
+
+    // *3. Find user based on email*
+    const user = await User.findOne({email});
+    console.log("user", user);
+    
+    // *4. Return response if user not found*
+    if(!user) {
+        return res.status(400).json(new ApiResponse(400, "Invalid email"));
+    }
+
+    // *5. Check if user's email is already verified*
+    if(user.isVerified) {
+        return res.status(400).json(new ApiResponse(400, "User is already verified"));
+    }
+
+    // *6. Generate new verification token*
+    const {unHashedToken, hashedToken, tokenExpiry} = user.generateTemporaryToken();
+    console.log("token", unHashedToken, hashedToken, tokenExpiry);
+
+    // *7. Set hashed token and expiry in User model*
+    user.verificationToken = hashedToken;
+    user.verificationTokenExpiry = tokenExpiry;
+
+    // *8. Save user model*
+    await user.save();
+
+    // *9. Send email using unhashed verification token*
+    await sendMail({
+        email: user.email,
+        subject: "Please verify your email",
+        mailgenContent: emailVerificationMailgenContent(user.name, `${config.BASE_URL}/api/v1/users/verify-email/${unHashedToken}`)
+    })
+
+    // *10. Send response*
+    res.status(200).json(new ApiResponse(200, "Resend verification email is successfully completed!!"));
+    
+})
+
+const changeUserPassword = asyncHandler(async (req, res) => {
+    // get user from req.user
+    // get  old and new password from body
+    // compare old password it is correct or not
+    // return res if old password is wrong
+    // hashed new password
+    // update password in user model
+    // save user
+    // find session
+    // return res if session not found
+    // revoked session
+    // send email 
+    // send res
+
+    // *1. Get user from req.user*
+
+    // *2. Get old and new password from body*
+
+    // *3. Compare old password with stored password*
+
+    // *4. Return response if old password is wrong*
+
+    // *5. Hash new password*
+
+    // *6. Update password in User model*
+
+    // *7. Save user*
+
+    // *8. Find current session*
+
+    // *9. Return response if session not found*
+
+    // *10. Revoke current session*
+
+    // *11. Send password changed email*
+
+    // *12. Send response*
+})
+
+export { healthCheckRoute, userRegister, userVerification, userLogin, refreshToken, userLogout, userProfile, resendVerificationEmail }

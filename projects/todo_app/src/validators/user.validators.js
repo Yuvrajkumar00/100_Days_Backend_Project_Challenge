@@ -50,4 +50,13 @@ const refreshTokenValidator = () => {
     ]
 }
 
-export { userRegisterationValidator, userLoginValidator, userVerificationValidator, refreshTokenValidator }
+const resendVerificationEmailValidator = () => {
+    return [
+        body("email")
+            .trim()
+            .notEmpty().withMessage("Email is required")
+            .isEmail().withMessage("Email is invalid")
+    ]
+}
+
+export { userRegisterationValidator, userLoginValidator, userVerificationValidator, refreshTokenValidator, resendVerificationEmailValidator }

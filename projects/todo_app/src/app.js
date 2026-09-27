@@ -3,6 +3,7 @@ import cors from "cors";
 import config from "./configs/config.js";
 import dns from "dns";
 import cookieParser from "cookie-parser";
+import {globalErrorHandler} from "./middlewares/globalErrorHandler.middlewares.js";
 
 dns.setServers([
     "8.8.8.8",
@@ -25,5 +26,6 @@ app.use(cookieParser());
 import { userRoute } from "./routes/user.routes.js";
 
 app.use("/api/v1/users", userRoute);
+app.use(globalErrorHandler);
 
 export default app;

@@ -84,7 +84,7 @@ userSchema.methods.generateAccessToken = function(session) {
 userSchema.methods.generateTemporaryToken = function() {
     const unHashedToken = crypto.randomBytes(32).toString("hex");
     const hashedToken = crypto.createHash("sha256").update(unHashedToken).digest("hex");
-    const tokenExpiry = Date.now() + (20*60*1000) //20min
+    const tokenExpiry = Date.now() + (1*60*1000) //20min
 
     return {unHashedToken, hashedToken, tokenExpiry}
 }

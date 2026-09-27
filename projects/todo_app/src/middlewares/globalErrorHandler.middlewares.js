@@ -9,5 +9,3 @@ export const globalErrorHandler = (error, req, res, next) => {
 
     return res.status(error.statusCode || 500).json(new ApiResponse(error.statusCode || 500, error.message, error.errors));
 }
-
-export {globalErrorHandler};
