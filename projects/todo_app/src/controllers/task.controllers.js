@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/async-handler.js";
 import { Todo } from "../models/task.models.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-errors.js";
+import { AvailableTodoStatuses, AvailableTodoPriorities } from "../utils/constants.js";
 
 const createTodo = asyncHandler(async (req, res) => {
     // 1. get data from user
@@ -45,8 +46,8 @@ const getTodo = asyncHandler(async (req, res) => {
 
 const getAllTodos = asyncHandler(async (req, res) => {
     // get data from query
-    const { page = 1, limit = 10 } = req.query;
-    console.log("page", page, "limit", limit);
+    const { page = 1, limit = 10, status, priority } = req.query;
+    console.log("page", page, "limit", limit, "status", status);
 
     const pageNumber = Number(page);
     const limitNumber = Number(limit);
@@ -61,11 +62,26 @@ const getAllTodos = asyncHandler(async (req, res) => {
 
     const skip = (pageNumber - 1) * limitNumber;
 
-    const filter = {
+    let filter = {
         createdBy: req.user._id,
-        isDeleted: false
+        isDeleted: false,
     };
-    
+
+    if (status) {
+        if (!AvailableTodoStatuses.includes(status)) {
+            return res.status(400).json(new ApiResponse(400, "Invalid status"));
+        }
+        filter.status = status;
+    }
+
+    if (priority) {
+        if (!AvailableTodoPriorities.includes(priority)) {
+            return res.status(400).json(new ApiResponse(400, "Invalid priority"));
+        }
+        filter.priority = priority;
+    }
+    console.log("filter", filter);
+
     // 1. get all todos
     const allTodos = await Todo.find(filter)
         .skip(skip)
@@ -74,7 +90,7 @@ const getAllTodos = asyncHandler(async (req, res) => {
 
     const totalTodos = await Todo.countDocuments(filter);
     const totalPages = Math.ceil(totalTodos / limitNumber);
-    
+
 
     // 3. res send
     res.status(200).json(new ApiResponse(
