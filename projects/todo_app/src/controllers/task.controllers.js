@@ -44,12 +44,52 @@ const getTodo = asyncHandler(async (req, res) => {
 })
 
 const getAllTodos = asyncHandler(async (req, res) => {
+    // get data from query
+    const { page = 1, limit = 10 } = req.query;
+    console.log("page", page, "limit", limit);
+
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
+
+    if (pageNumber < 1 || Number.isNaN(pageNumber)) {
+        return res.status(400).json(new ApiResponse(400, "Page length should be at least 1 or greater"));
+    }
+
+    if (limitNumber > 10 || limitNumber <= 0 || Number.isNaN(limitNumber)) {
+        return res.status(400).json(new ApiResponse(400, "Limit number should be maximum 10"));
+    }
+
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const filter = {
+        createdBy: req.user._id,
+        isDeleted: false
+    };
+    
     // 1. get all todos
-    const allTodos = await Todo.find({ createdBy: req.user._id, isDeleted: false });
+    const allTodos = await Todo.find(filter)
+        .skip(skip)
+        .limit(limitNumber);
     console.log("allTodos", allTodos);
 
+    const totalTodos = await Todo.countDocuments(filter);
+    const totalPages = Math.ceil(totalTodos / limitNumber);
+    
+
     // 3. res send
-    res.status(200).json(new ApiResponse(200, "Get all todos", allTodos));
+    res.status(200).json(new ApiResponse(
+        200,
+        "Get all todos",
+        {
+            allTodos,
+            pagination: {
+                currentPage: pageNumber,
+                limit: limitNumber,
+                totalPages,
+                totalTodos,
+            }
+        }
+    ));
 })
 
 const updateTodo = asyncHandler(async (req, res) => {
@@ -85,11 +125,11 @@ const updateTodo = asyncHandler(async (req, res) => {
         isDeleted: false,
     },
         updateData,
-        {returnDocument: "after"}
+        { returnDocument: "after" }
     )
 
     // 6. return res if todo not found
-    if(!todo) {
+    if (!todo) {
         return res.status(404).json(new ApiResponse(404, "Todo not found"));
     }
 
@@ -100,15 +140,15 @@ const updateTodo = asyncHandler(async (req, res) => {
 
 const deleteTodo = asyncHandler(async (req, res) => {
     // 1. get id from the user 
-    const {id} = req.params;
+    const { id } = req.params;
 
     // 2. validate id using express-validator
 
     // 3. find todo based on todo id and createdBy
-    const todo = await Todo.findOne({_id: id, createdBy: req.user._id});
+    const todo = await Todo.findOne({ _id: id, createdBy: req.user._id });
 
     // 4. return res if todo not found
-    if(!todo) {
+    if (!todo) {
         return res.status(404).json(new ApiResponse(404, "todo not found"));
     }
 
