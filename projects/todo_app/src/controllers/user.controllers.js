@@ -2,7 +2,7 @@ import { asyncHandler } from "../utils/async-handler.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { User } from "../models/user.models.js";
 import { UserRolesEnum } from "../utils/constants.js";
-import { sendMail, emailVerificationMailgenContent } from "../utils/mail.js";
+import { sendMail, emailVerificationMailgenContent, resetPasswordVerificationMailgenContent } from "../utils/mail.js";
 import config from "../configs/config.js";
 import { ApiError } from "../utils/api-errors.js";
 import crypto from "crypto";
@@ -365,19 +365,6 @@ const resendVerificationEmail = asyncHandler( async(req, res) => {
 })
 
 const changeUserPassword = asyncHandler(async (req, res) => {
-    // get user from req.user
-    // get  old and new password from body
-    // compare old password it is correct or not
-    // return res if old password is wrong
-    // hashed new password
-    // update password in user model
-    // save user
-    // find session
-    // return res if session not found
-    // revoked session
-    // send email 
-    // send res
-
     // *1. Get user from req.user*
 
     // *2. Get old and new password from body*
@@ -403,4 +390,48 @@ const changeUserPassword = asyncHandler(async (req, res) => {
     // *12. Send response*
 })
 
-export { healthCheckRoute, userRegister, userVerification, userLogin, refreshToken, userLogout, userProfile, resendVerificationEmail }
+const forgotPassword = asyncHandler(async (req, res) => {
+    // 1. get email from body
+    const {email} = req.body;
+    console.log("email", email);
+    
+    // 2. validate email
+    if(!email) {
+        throw new ApiError(400, "Invalid user");
+    }
+
+    // 3. find user based on email
+    const user = await User.findOne({email});
+    console.log("user", user);
+    
+    // 4. throw error if user not found
+    if(!user) {
+        throw new ApiError(500, "User not found in database");
+    }
+    // 5. generate a token
+    const token = crypto.randomBytes(32).toString("hex");
+    
+    // 6. hash the token
+    const hashToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    // 7. save a token in db
+    user.resetPasswordToken = hashToken;
+    user.resetPasswordExpiry = Date.now() + 15 * 60 * 1000;
+    await user.save();
+
+    // 8. send email to the user
+    sendMail({
+        email: user?.email,
+        subject: "Please reset your password",
+        mailgenContent: resetPasswordVerificationMailgenContent(
+            user.name,
+            `${config.BASE_URL}/api/v1/users/reset-password/${token}`
+        )
+    });
+
+    // 9. send token to the user
+    res.status(200).json(new ApiResponse(200, "User forgot password successfully"));
+
+})
+
+export { healthCheckRoute, userRegister, userVerification, userLogin, refreshToken, userLogout, userProfile, resendVerificationEmail, forgotPassword }

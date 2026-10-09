@@ -4,6 +4,7 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../configs/config.js";
+import { type } from "os";
 
 const userSchema = new Schema({
     name: {
@@ -39,6 +40,12 @@ const userSchema = new Schema({
         type: String,
     },
     verificationTokenExpiry: {
+        type: Date,
+    },
+    resetPasswordToken: {
+        type: String,
+    },
+    resetPasswordExpiry: {
         type: Date,
     }
 
