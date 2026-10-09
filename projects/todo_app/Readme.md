@@ -79,8 +79,8 @@ JWT_REFRESH_SECRET=your_secret
 
 * [☑️] Project Setup
 * [☑️] Todo Model
-* [ ] CRUD
-* [ ] Authentication
+* [☑️] CRUD
+* [☑️] Authentication
 * [ ] Authorization
 * [ ] Advanced Queries
 * [ ] Testing

@@ -24,8 +24,10 @@ app.use(cookieParser());
 
 // import routes
 import { userRoute } from "./routes/user.routes.js";
+import {todoRoute} from "./routes/task.routes.js";
 
 app.use("/api/v1/users", userRoute);
+app.use("/api/v1/todos", todoRoute);
 app.use(globalErrorHandler);
 
 export default app;

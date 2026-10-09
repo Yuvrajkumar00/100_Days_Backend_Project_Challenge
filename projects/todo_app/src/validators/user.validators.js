@@ -59,4 +59,28 @@ const resendVerificationEmailValidator = () => {
     ]
 }
 
-export { userRegisterationValidator, userLoginValidator, userVerificationValidator, refreshTokenValidator, resendVerificationEmailValidator }
+const todoValidator = () => {
+    return [
+        body("title")
+            .trim()
+            .notEmpty().withMessage("Title is required"),
+        body("description")
+            .trim(),
+        body("status")
+            .optional()
+            .isIn(["pending", "completed"]).withMessage("Invalid status"),
+        body("priority")
+            .optional()
+            .isIn(["low", "medium", "high"]).withMessage("Invalid priority")
+    ]
+}
+
+const todoIdValidator = () => {
+    return [
+        param("id")
+            .trim()
+            .notEmpty().withMessage("Todo id is required")
+    ]
+}
+
+export { userRegisterationValidator, userLoginValidator, userVerificationValidator, refreshTokenValidator, resendVerificationEmailValidator, todoValidator, todoIdValidator }
